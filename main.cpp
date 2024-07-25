@@ -20,7 +20,8 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
 //The image we will load and show on the screen
-SDL_Surface* gHelloWorld = NULL;
+SDL_Surface* gTileJoker = NULL;
+SDL_Surface* gTiles[512];
 
 int WinMain() {
 
@@ -39,7 +40,7 @@ int WinMain() {
         else
         {
             //Apply the image
-            SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
+            SDL_BlitSurface( gTiles[0], NULL, gScreenSurface, NULL );
 
             //Update the surface
             SDL_UpdateWindowSurface( gWindow );
@@ -69,7 +70,7 @@ bool init()
     else
     {
         //Create window
-        gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
+        gWindow = SDL_CreateWindow( "Rummikub", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
         {
             printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
@@ -91,12 +92,14 @@ bool loadMedia()
     bool success = true;
 
     //Load splash image
-    gHelloWorld = SDL_LoadBMP( "tile_joker.bmp" );
-    if( gHelloWorld == NULL )
+    gTileJoker = SDL_LoadBMP( "C:\\Users\\Richard\\Documents\\RummikubGame\\Rummikub\\images\\tile_joker.bmp" );
+    if( gTileJoker == NULL )
     {
-        printf( "Unable to load image %s! SDL Error: %s\n", "tile_joker.bmp", SDL_GetError() );
+        printf( "Unable to load image %s! SDL Error: %s\n", "images\\tile_joker.bmp", SDL_GetError() );
         success = false;
     }
+
+    gTiles[0] = SDL_LoadBMP( "C:\\Users\\Richard\\Documents\\RummikubGame\\Rummikub\\images\\tile_blank.bmp" );
 
     return success;
 }
@@ -104,8 +107,11 @@ bool loadMedia()
 void close()
 {
     //Deallocate surface
-    SDL_FreeSurface( gHelloWorld );
-    gHelloWorld = NULL;
+    SDL_FreeSurface( gTileJoker );
+    gTileJoker = NULL;
+
+    SDL_FreeSurface( gTiles[0] );
+    gTiles[0] = NULL;
 
     //Destroy window
     SDL_DestroyWindow( gWindow );
