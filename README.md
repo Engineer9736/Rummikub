@@ -1,4 +1,4 @@
-Remake of the game Rummikub, just to get my C++ skills going again.
+## Remake of the game Rummikub, just to get my C++ skills going again.
 
 Requirements:
 - After the user has dragged and dropped a tile, the game should verify whether the intended move is legal. If not, revert back to the old situation.
