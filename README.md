@@ -9,5 +9,7 @@ Requirements:
 Board -> Tiles
 
 Tile.MoveTo(x,y)
+
 Use Bresenham to have the tile fly around.
+
 Onmousedown pick up the tile, onmouseup release the tile -> verify placement, if illegal, return.
