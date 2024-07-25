@@ -8,7 +8,7 @@
                 "-g",
                 "${file}",
                 "-LC:\\Users\\Richard\\Documents\\RummikubGame\\Rummikub\\SDL2\\lib\\x64",
-                "-lmingw32","-lSDL2main","-lSDL2",
+                "-lmingw32","-lSDL2main","-lSDL2","-lopengl32",
                 "-fdiagnostics-color=always",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
