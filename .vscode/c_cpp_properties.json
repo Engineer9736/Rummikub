@@ -3,7 +3,8 @@
         {
             "name": "windows-clang-x64",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "SDL2/lib/x64/"
             ],
             "defines": [
                 "_DEBUG",
