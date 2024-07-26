@@ -1,17 +1,10 @@
 #include <iostream>
-#include "SDL2\include\SDL.h"
+#include "main.h"
 
 using namespace std;
 
 
-//Starts up SDL and creates window
-bool init();
 
-//Loads media
-bool loadMedia();
-
-//Frees media and shuts down SDL
-void close();
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -22,6 +15,12 @@ SDL_Surface* gScreenSurface = NULL;
 //The image we will load and show on the screen
 SDL_Surface* gTileJoker = NULL;
 SDL_Surface* gTiles[512];
+
+SDL_Texture* texture;
+
+SDL_Renderer* renderer;
+
+
 
 int WinMain() {
 
@@ -41,11 +40,19 @@ int WinMain() {
         {
             
 
-            //Apply the image
-            SDL_BlitSurface( gTiles[0], NULL, gScreenSurface, NULL );
+            SDL_SetRenderDrawColor(renderer, 18, 96, 36, 0); // Green background
 
-            //Update the surface
-            SDL_UpdateWindowSurface( gWindow );
+            SDL_RenderClear(renderer);
+
+            SDL_Point size = getsize(texture);
+            SDL_Rect dstrect = { 0, 0, size.x, size.y };
+            SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+
+            //SDL_RenderFillRect(rendArg, &screenRect);
+
+
+
+            SDL_RenderPresent(renderer);
 
             
 
@@ -60,11 +67,17 @@ int WinMain() {
     return 0;
 }
 
+SDL_Point getsize(SDL_Texture *texture) {
+    SDL_Point size;
+    SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
+    return size;
+}
+
 bool init()
 {
     //Initialization flag
     bool success = true;
-    SDL_Renderer* renderer;
+    
 
     //Initialize SDL
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -75,7 +88,7 @@ bool init()
     else
     {
         //Create window
-        gWindow = SDL_CreateWindow( "Rummikub", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
+        gWindow = SDL_CreateWindow( "Rummikub", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
         {
             printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
@@ -83,18 +96,11 @@ bool init()
         }
         else
         {
-
-
-            // Background color should be 18,96,36
-
-            SDL_Rect screenRect = {0, 0, 800, 600};
-            SDL_Renderer* rendArg = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-            SDL_SetRenderDrawColor(rendArg, 0xFF, 0x00, 0x00, 0x00);
-            SDL_RenderFillRect(rendArg, &screenRect);
-            SDL_RenderPresent(rendArg);
+            renderer = SDL_CreateRenderer(gWindow, -1, 0);
+            
 
             //Get window surface
-            gScreenSurface = SDL_GetWindowSurface( gWindow );
+            //gScreenSurface = SDL_GetWindowSurface( gWindow );
         }
     }
 
@@ -108,21 +114,21 @@ bool loadMedia()
 
     //Load splash image
     gTileJoker = SDL_LoadBMP( "C:\\Users\\Richard\\Documents\\RummikubGame\\Rummikub\\images\\tile_joker.bmp" );
-    if( gTileJoker == NULL )
-    {
-        printf( "Unable to load image %s! SDL Error: %s\n", "images\\tile_joker.bmp", SDL_GetError() );
-        success = false;
-    }
-
     gTiles[0] = SDL_LoadBMP( "C:\\Users\\Richard\\Documents\\RummikubGame\\Rummikub\\images\\tile_blank.bmp" );
+
+
+    texture = SDL_CreateTextureFromSurface(renderer, gTileJoker);
+    
 
     return success;
 }
 
 void close()
 {
-    //Deallocate surface
-    SDL_FreeSurface( gTileJoker );
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+
+    SDL_FreeSurface(gTileJoker);
     gTileJoker = NULL;
 
     SDL_FreeSurface( gTiles[0] );
