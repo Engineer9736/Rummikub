@@ -39,11 +39,15 @@ int WinMain() {
         }
         else
         {
+            
+
             //Apply the image
             SDL_BlitSurface( gTiles[0], NULL, gScreenSurface, NULL );
 
             //Update the surface
             SDL_UpdateWindowSurface( gWindow );
+
+            
 
             //Hack to get window to stay up
             SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
@@ -60,6 +64,7 @@ bool init()
 {
     //Initialization flag
     bool success = true;
+    SDL_Renderer* renderer;
 
     //Initialize SDL
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -78,6 +83,16 @@ bool init()
         }
         else
         {
+
+
+            // Background color should be 18,96,36
+
+            SDL_Rect screenRect = {0, 0, 800, 600};
+            SDL_Renderer* rendArg = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+            SDL_SetRenderDrawColor(rendArg, 0xFF, 0x00, 0x00, 0x00);
+            SDL_RenderFillRect(rendArg, &screenRect);
+            SDL_RenderPresent(rendArg);
+
             //Get window surface
             gScreenSurface = SDL_GetWindowSurface( gWindow );
         }
