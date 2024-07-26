@@ -11,7 +11,7 @@
                 "-lmingw32","-lSDL2main","-lSDL2","-lopengl32",
                 "-fdiagnostics-color=always",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\bin\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"
@@ -34,7 +34,7 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\bin\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

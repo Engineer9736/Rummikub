@@ -1,2 +1,7 @@
-bool followMouse = false;
+class Tile {
+    private:
+        bool followMouse = false;
+
+};
+
 
