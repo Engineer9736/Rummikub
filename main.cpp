@@ -20,7 +20,7 @@ SDL_Texture* texture;
 
 SDL_Renderer* renderer;
 
-
+bool mousepressed = false;
 
 int WinMain() {
 
@@ -40,40 +40,39 @@ int WinMain() {
         {
             
 
-            SDL_SetRenderDrawColor(renderer, 18, 96, 36, 0); // Green background
-
-            SDL_RenderClear(renderer);
-
-            SDL_Point size = getsize(texture);
-            SDL_Rect dstrect = { 0, 0, size.x, size.y };
-            SDL_RenderCopy(renderer, texture, NULL, &dstrect);
-
-            //SDL_RenderFillRect(rendArg, &screenRect);
-
-
-
-            SDL_RenderPresent(renderer);
-
-            // Event handler
-            SDL_Event e;
             bool quit = false;
             while( quit == false ) {
+
+                SDL_SetRenderDrawColor(renderer, 18, 96, mousepressed?255:36, 0); // Green background
+
+                SDL_RenderClear(renderer);
+
+                SDL_Point size = getsize(texture);
+                SDL_Rect dstrect = { 0, 0, size.x, size.y };
+                SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+
+                //SDL_RenderFillRect(rendArg, &screenRect);
+
+
+
+                SDL_RenderPresent(renderer);
+
+                // Event handler
+                SDL_Event e;
+            
                 while( SDL_PollEvent( &e ) ) {
-                    switch (e.type) {
-                        case SDL_QUIT:
-                            quit = true;
-                            break;
-                        case SDL_MOUSEBUTTONDOWN:
-                            switch (e.button.button)
-                            {
-                                case SDL_BUTTON_LEFT:
-                                    SDL_ShowSimpleMessageBox(0, "Mouse", "Left button was pressed!", window);
-                                    break;
-                                case SDL_BUTTON_RIGHT:
-                                    SDL_ShowSimpleMessageBox(0, "Mouse", "Right button was pressed!", window);
-                                    break;
-                            }
-                            break;
+                    if (e.type == SDL_QUIT) {
+                        quit = true;
+                    }
+
+                    if (e.button.button == SDL_BUTTON_LEFT && e.type == SDL_MOUSEBUTTONDOWN) {
+                        mousepressed = true;
+                            //SDL_ShowSimpleMessageBox(0, "Mouse", "Left button was pressed!", window);
+                    }
+
+                    if (e.button.button == SDL_BUTTON_LEFT && e.type == SDL_MOUSEBUTTONUP) {
+                        mousepressed = false;
+                            //SDL_ShowSimpleMessageBox(0, "Mouse", "Left button was released!", window);
                     }
                 }
             }
