@@ -7,7 +7,7 @@ using namespace std;
 
 
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window* window = NULL;
     
 //The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
@@ -54,10 +54,29 @@ int WinMain() {
 
             SDL_RenderPresent(renderer);
 
-            
-
-            //Hack to get window to stay up
-            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+            // Event handler
+            SDL_Event e;
+            bool quit = false;
+            while( quit == false ) {
+                while( SDL_PollEvent( &e ) ) {
+                    switch (e.type) {
+                        case SDL_QUIT:
+                            quit = true;
+                            break;
+                        case SDL_MOUSEBUTTONDOWN:
+                            switch (e.button.button)
+                            {
+                                case SDL_BUTTON_LEFT:
+                                    SDL_ShowSimpleMessageBox(0, "Mouse", "Left button was pressed!", window);
+                                    break;
+                                case SDL_BUTTON_RIGHT:
+                                    SDL_ShowSimpleMessageBox(0, "Mouse", "Right button was pressed!", window);
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -88,15 +107,15 @@ bool init()
     else
     {
         //Create window
-        gWindow = SDL_CreateWindow( "Rummikub", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN );
-        if( gWindow == NULL )
+        window = SDL_CreateWindow( "Rummikub", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 768, SDL_WINDOW_SHOWN );
+        if( window == NULL )
         {
             printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
             success = false;
         }
         else
         {
-            renderer = SDL_CreateRenderer(gWindow, -1, 0);
+            renderer = SDL_CreateRenderer(window, -1, 0);
             
 
             //Get window surface
@@ -135,8 +154,8 @@ void close()
     gTiles[0] = NULL;
 
     //Destroy window
-    SDL_DestroyWindow( gWindow );
-    gWindow = NULL;
+    SDL_DestroyWindow( window );
+    window = NULL;
 
     //Quit SDL subsystems
     SDL_Quit();
